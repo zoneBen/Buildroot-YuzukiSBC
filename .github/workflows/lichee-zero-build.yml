@@ -92,9 +92,9 @@ jobs:
       with:
         name: lichee-pi-zero-firmware
         path: |
-          output/images/sdcard.img
-          output/images/*.dtb
-          output/images/zImage
-          output/images/u-boot*
-          output/images/rootfs.*
+          buildroot/output/images/sdcard.img
+          buildroot/output/images/*.dtb
+          buildroot/output/images/zImage
+          buildroot/output/images/u-boot*
+          buildroot/output/images/rootfs.*
         if-no-files-found: warn
