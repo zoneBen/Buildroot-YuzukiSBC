@@ -50,14 +50,18 @@ jobs:
       run: |
         # Source the environment setup script
         source ./envsetup.sh || true
+        # Change to buildroot directory
+        cd buildroot
         # Show available configs
         make list-defconfigs | grep -i lichee
         # Show the target config file
-        ls -la buildroot/configs/sipeed_lichee_zero_defconfig
+        ls -la configs/sipeed_lichee_zero_defconfig
         
     - name: Build Lichee Pi Zero Config
       run: |
         source ./envsetup.sh || true
+        # Change to buildroot directory
+        cd buildroot
         export BR2_JLEVEL=$(nproc)
         echo "Building with sipeed_lichee_zero_defconfig..."
         make sipeed_lichee_zero_defconfig
@@ -66,6 +70,8 @@ jobs:
     - name: Compile Buildroot
       run: |
         source ./envsetup.sh || true
+        # Change to buildroot directory
+        cd buildroot
         export BR2_JLEVEL=$(nproc)
         echo "Starting build process for Lichee Pi Zero..."
         time make -j$(nproc)
@@ -73,14 +79,15 @@ jobs:
         
     - name: Check Output Files
       run: |
-        ls -la buildroot/output/images/
-        ls -la buildroot/output/images/* || true
+        cd buildroot
+        ls -la output/images/
+        ls -la output/images/* || true
         echo "Checking for firmware files..."
-        find buildroot/output/images -type f -name "*.img" -exec ls -la {} \;
+        find output/images -type f -name "*.img" -exec ls -la {} \;
         
     - name: Upload Artifacts
       uses: actions/upload-artifact@v4
       with:
         name: lichee-pi-zero-firmware
-        path: buildroot/output/images/*.img
+        path: output/images/*.img
         if-no-files-found: warn
