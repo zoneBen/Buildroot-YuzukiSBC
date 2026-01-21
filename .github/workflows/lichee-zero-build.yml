@@ -84,10 +84,17 @@ jobs:
         ls -la output/images/* || true
         echo "Checking for firmware files..."
         find output/images -type f -name "*.img" -exec ls -la {} \;
+        echo "Looking for sdcard.img specifically..."
+        ls -la output/images/sdcard.img || echo "sdcard.img not found"
         
     - name: Upload Artifacts
       uses: actions/upload-artifact@v4
       with:
         name: lichee-pi-zero-firmware
-        path: output/images/*.img
+        path: |
+          output/images/sdcard.img
+          output/images/*.dtb
+          output/images/zImage
+          output/images/u-boot*
+          output/images/rootfs.*
         if-no-files-found: warn
