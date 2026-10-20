@@ -1,0 +1,22 @@
+#!/bin/sh
+#
+# Load the RTL8188EU USB WiFi driver at boot.
+#
+# The dongle is usually already enumerated when init starts, so mdev never
+# sees its hotplug event; loading the module here makes wlan0 appear without
+# having to unplug/replug the adapter. Hotplug is still handled by mdev for
+# adapters connected later.
+
+case "$1" in
+	start)
+		modprobe 8188eu 2>/dev/null || true
+		;;
+	stop)
+		;;
+	restart|reload)
+		;;
+	*)
+		echo "Usage: $0 {start|stop|restart}"
+		exit 1
+		;;
+esac

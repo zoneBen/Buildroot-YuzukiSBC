@@ -1,0 +1,8 @@
+setenv bootargs console=ttyS0,115200 console=tty0 root=/dev/mmcblk0p2 rootwait panic=10 earlyprintk rw
+# The mainline DE2 driver takes the panel timing from the U-Boot DT
+# (panel/display-timings); these variables document the 800x480 mode.
+setenv video-mode sunxi:800x480-18@60,monitor=lcd
+setenv lcd-mode x:800,y:480,depth:18,pclk_khz:33000,le:87,ri:40,up:31,lo:13,hs:1,vs:1,sync:3,vmode:0
+load mmc 0:1 0x41000000 zImage
+load mmc 0:1 0x41800000 sun8i-v3s-bingpi-linux.dtb
+bootz 0x41000000 - 0x41800000
